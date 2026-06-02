@@ -1,12 +1,12 @@
-name: First WorkFlow
-on: workflow_dispatch
-jobs:
-  first-job:
-    runs-on: windows-latest
-    steps:
-      - name: Print greeting
-        run: |
-          echo "Hello Joy"
-          echo "How are you doing ?" 
-      - name: Print goodbye
-        run: echo "Bye Joy!"
+# name: First WorkFlow
+# on: workflow_dispatch
+# jobs:
+#   first-job:
+#     runs-on: windows-latest
+#     steps:
+#       - name: Print greeting
+#         run: |
+#           echo "Hello Joy"
+#           echo "How are you doing ?" 
+#       - name: Print goodbye
+#         run: echo "Bye Joy!"
