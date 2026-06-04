@@ -4,7 +4,7 @@ on:
         branches: [main]
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -15,19 +15,21 @@ jobs:
           node-version: '20'
       
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
             path: ~/.cache/ms-playwright
-            key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+            key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-playwright-
       
       - name: Install Playwright browsers
         run: npx playwright install chromium --with-deps
       
       - name: Run Playwright tests
-        run: 'npx playwright test --grep "Test Case 1: Register User"'
+        run: 'npx playwright test --grep "Test Case 2: Login User with correct email and password"'
       
       - name: Upload test results
         if: always()
