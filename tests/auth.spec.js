@@ -4,6 +4,7 @@ test.describe('Authentication Tests', () => {
   test('Test Case 1: Register User', async ({ page }) => {
     // Navigate to signup page
     await page.goto('/');
+    await page.waitForSelector('a[href="/login"]', { timeout: 15000 });
     await page.click('a[href="/login"]');
     
     // Fill signup form
@@ -54,6 +55,7 @@ test.describe('Authentication Tests', () => {
     
     // Navigate to login and register a new user
     await page.goto('/');
+    await page.waitForSelector('a[href="/login"]', { timeout: 15000 });
     await page.click('a[href="/login"]');
 
     // Fill signup form
