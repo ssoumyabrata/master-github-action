@@ -13,7 +13,7 @@ test.describe('Authentication Tests', () => {
     await page.click('button[data-qa="signup-button"]');
 
     // Wait for registration form to load
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
 
     // Fill registration form
     await page.click('input#id_gender1'); // Select gender (Mr.)
@@ -39,7 +39,7 @@ test.describe('Authentication Tests', () => {
     await page.click('button[data-qa="create-account"]');
 
     // Verify account created message
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
     await expect(page.locator('text=Account Created!')).toBeVisible();
     
     // Click continue button
@@ -62,7 +62,7 @@ test.describe('Authentication Tests', () => {
     await page.click('button[data-qa="signup-button"]');
 
     // Wait for registration form
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
 
     // Fill registration details
     await page.click('input#id_gender1');
@@ -81,12 +81,12 @@ test.describe('Authentication Tests', () => {
     await page.selectOption('select#years', '1990');
     
     await page.click('button[data-qa="create-account"]');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
     await page.click('a[data-qa="continue-button"]');
 
     // Logout
     await page.click('a[href="/logout"]');
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
 
     // Now login with correct credentials
     await page.click('a[href="/login"]');
@@ -95,7 +95,7 @@ test.describe('Authentication Tests', () => {
     await page.click('button[data-qa="login-button"]');
 
     // Verify successful login
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('load');
     await expect(page.locator('text=Logged in as')).toBeVisible();
   });
 
