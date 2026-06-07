@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+         # Publish any file or results. Connected to 'steps' publish - THIS IS JOB OUTPUTS
+    outputs:
+      test-results: ${{ steps.publish-test-results.outputs.test-results }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,6 +37,7 @@ jobs:
       - name: Run Playwright tests
         run: 'npx playwright test tests/saucedemo-tests.spec.js'
       
+        # upload any files or results - THIS IS JOB ARTIFACTS
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -40,6 +45,12 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+          # Publish any file or results. Conencted to 'outputs' job  - THIS IS JOB OUTPUTS
+      - name: Publish test results
+        id: publish-test-results
+        run: find playwright-report/* -type f -execdir echo 'test-results={}' >> $GITHUB_OUTPUT ';'
+
   build:
     needs : test
     runs-on: ubuntu-latest
@@ -50,6 +61,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: playwright-report
+      - name: Output test results file name
+        run: echo "${{ needs.test.outputs.test-results}}"
   deploy:
     needs : build
     runs-on: ubuntu-latest
