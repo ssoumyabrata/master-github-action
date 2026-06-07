@@ -76,10 +76,10 @@ jobs:
     steps:
       - name: echo build
         run: echo "Build it.."
-      - name: get playwright reports
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
+      ##- name: get playwright reports ##this will fail, because the artifacts will be available conditionally now. not always.
+        ##uses: actions/download-artifact@v4
+        ##with:
+          ##name: playwright-report
       - name: Output test results file name
         run: echo "${{ needs.test.outputs.test-results}}"
 
@@ -97,3 +97,17 @@ jobs:
       - name: echo deploy
         run: echo "Deploy it.."
         
+  report: 
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate report message
+        run: echo "Generating report.."
+      
+      - name: Download test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+      
+      - name: Display report
+        run: ls -la playwright-report/
