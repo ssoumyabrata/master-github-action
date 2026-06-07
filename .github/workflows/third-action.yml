@@ -1,0 +1,65 @@
+name: SauceLab Github Action Workflow
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+env:
+  SAUCE_USER: ${{secrets.SAUCE_USER}}
+
+jobs:
+  test:
+     environment: Test
+     uses: ./.github/workflows/reusable.yml
+     with:
+      force-node24: 'true'
+    secrets:
+      sauce-password: ${{ secrets.SAUCE_PASSWORD }}
+      invalid-password: ${{ secrets.INVALID_PASSWORD }}
+      sauce-user: ${{ secrets.SAUCE_USER }}
+
+      
+
+  build:
+    needs : test
+    environment: Build
+    env: ## adding same code as tests to learn env variables in jobs and steps
+      SAUCE_PASSWORD: ${{secrets.SAUCE_PASSWORD}}
+      #INVALID_PASSWORD: ${{secrets.INVALID_PASSWORD}}
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo build
+        run: echo "Build it.."
+      - name: Output test results file name
+        run: echo "${{ needs.test.outputs.test-results}}"
+
+      - name: Print the env variables in test job
+        run: |
+          echo "SAUCE_USER: $SAUCE_USER"
+          echo "SAUCE_PASSWORD: $SAUCE_PASSWORD"
+          echo "INVALID_PASSWORD: $INVALID_PASSWORD" 
+
+  
+  deploy:
+    needs : build
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo deploy
+        run: echo "Deploy it.."
+        
+  report: 
+    needs: test
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate report message
+        run: echo "Generating report.."
+      
+      - name: Download test artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+      
+      - name: Display report
+        run: ls -la playwright-report/
