@@ -1,7 +1,7 @@
 name: SauceLab Github Action Workflow
 on:
-  #push:
-   # branches: [main]
+  push:
+   branches: [main]
   workflow_dispatch:
 env:
   SAUCE_USER: ${{secrets.SAUCE_USER}}
