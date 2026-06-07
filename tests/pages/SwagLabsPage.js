@@ -1,12 +1,12 @@
 class SwagLabsPage {
   constructor(page) {
     this.page = page;
-    // Login page locators
+    // Login page locator list
     this.usernameInput = page.locator('#user-name');
     this.passwordInput = page.locator('#password');
     this.loginButton = page.locator('input[type="submit"]');
     this.errorMessage = page.locator('[data-test="error"]');
-    // Inventory page locators
+    // Inventory page locators= list
     this.inventoryList = page.locator('[data-test="inventory-container"]');
     this.cartBadge = page.locator('[data-test="shopping-cart-badge"]');
     this.menuButton = page.locator('#react-burger-menu-btn');
