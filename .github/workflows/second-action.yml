@@ -2,6 +2,7 @@ name: SauceLab Github Action Workflow
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 env:
   SAUCE_USER: ${{secrets.SAUCE_USER}}
 
@@ -40,7 +41,7 @@ jobs:
         run: npx playwright install chromium --with-deps
       
       - name: Run Playwright tests
-        run: 'npx playwright test tests/saucedemo-tests.spec.js'
+        run: 'npx playwright test tests/db-credential-tests.spec.js'
   
       - name: Upload test results       # upload any files or results - THIS IS JOB ARTIFACTS
         if: always()
