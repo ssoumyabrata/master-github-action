@@ -7,9 +7,10 @@ env:
 
 jobs:
   test:
+    environment: Test
     env:
-      SAUCE_PASSWORD: 'secret_sauce'
-      INVALID_PASSWORD: 'wrong_password'
+      SAUCE_PASSWORD:  ${{secrets.SAUCE_PASSWORD}}
+      INVALID_PASSWORD: ${{secrets.INVALID_PASSWORD}}
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     runs-on: ubuntu-latest
 
@@ -61,10 +62,10 @@ jobs:
 
   build:
     needs : test
-    
+    environment: Build
     env: ## adding same code as tests to learn env variables in jobs and steps
-      SAUCE_PASSWORD: 'deploy_secret_sauce'
-      #INVALID_PASSWORD: 'deploy_wrong_password'
+      SAUCE_PASSWORD: ${{secrets.SAUCE_PASSWORD}}
+      #INVALID_PASSWORD: ${{secrets.INVALID_PASSWORD}}
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     runs-on: ubuntu-latest
