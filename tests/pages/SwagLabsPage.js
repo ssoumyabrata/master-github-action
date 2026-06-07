@@ -23,7 +23,7 @@ class SwagLabsPage {
     await this.menuButton.click();
     await this.logoutLink.click();
   }
-
+ 
   async addToCart(productId) {
     await this.page.click(`[data-test="add-to-cart-${productId}"]`);
   }

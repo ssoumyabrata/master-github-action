@@ -2,14 +2,18 @@ name: SauceLab Github Action Workflow
 on:
   push:
     branches: [main]
+env:
+  SAUCE_USER: 'standard_user'
+
 jobs:
   test:
-    runs-on: ubuntu-latest
     env:
+      SAUCE_PASSWORD: 'secret_sauce'
+      INVALID_PASSWORD: 'wrong_password'
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    runs-on: ubuntu-latest
 
-         # Publish any file or results. Connected to 'steps' publish - THIS IS JOB OUTPUTS
-    outputs:
+    outputs: # Publish any file or results. Connected to 'steps' publish - THIS IS JOB OUTPUTS
       test-results: ${{ steps.publish-test-results.outputs.test-results }}
     steps:
       - name: Checkout code
@@ -36,23 +40,33 @@ jobs:
       
       - name: Run Playwright tests
         run: 'npx playwright test tests/saucedemo-tests.spec.js'
-      
-        # upload any files or results - THIS IS JOB ARTIFACTS
-      - name: Upload test results
+  
+      - name: Upload test results       # upload any files or results - THIS IS JOB ARTIFACTS
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
-          # Publish any file or results. Conencted to 'outputs' job  - THIS IS JOB OUTPUTS
-      - name: Publish test results
+          
+      - name: Publish test results # Publish any file or results. Conencted to 'outputs' job  - THIS IS JOB OUTPUTS
         id: publish-test-results
         run: find playwright-report/* -type f -execdir echo 'test-results={}' >> $GITHUB_OUTPUT ';'
 
+      - name: Print the env variables in test job
+        run: |
+          echo "SAUCE_USER: $SAUCE_USER"
+          echo "SAUCE_PASSWORD: $SAUCE_PASSWORD"
+          echo "INVALID_PASSWORD: $INVALID_PASSWORD"
+
   build:
     needs : test
+    
+    env: ## adding same code as tests to learn env variables in jobs and steps
+      SAUCE_PASSWORD: 'deploy_secret_sauce'
+      #INVALID_PASSWORD: 'deploy_wrong_password'
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     runs-on: ubuntu-latest
     steps:
       - name: echo build
@@ -63,14 +77,18 @@ jobs:
           name: playwright-report
       - name: Output test results file name
         run: echo "${{ needs.test.outputs.test-results}}"
+
+      - name: Print the env variables in test job
+        run: |
+          echo "SAUCE_USER: $SAUCE_USER"
+          echo "SAUCE_PASSWORD: $SAUCE_PASSWORD"
+          echo "INVALID_PASSWORD: $INVALID_PASSWORD" 
+
+  
   deploy:
     needs : build
     runs-on: ubuntu-latest
     steps:
       - name: echo deploy
         run: echo "Deploy it.."
-      - name: get playwright reports
-        uses: actions/download-artifact@v4
-        with:
-          name: playwright-report
         
