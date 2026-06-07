@@ -10,9 +10,10 @@ module.exports = defineConfig({
   timeout: 60000,
   expect: { timeout: 5000 },
   use: {
-    baseURL: 'https://automationexercise.com',
-    trace: 'on-first-retry',
+    baseURL: 'https://www.saucedemo.com/',
+    trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
     navigationTimeout: 30000,
     actionTimeout: 15000,
   },
