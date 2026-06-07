@@ -5,6 +5,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -12,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       
       - name: Install dependencies
         run: npm ci
@@ -29,7 +31,7 @@ jobs:
         run: npx playwright install chromium --with-deps
       
       - name: Run Playwright tests
-        run: 'npx playwright test --grep "Test Case 2: Login User with correct email and password"'
+        run: 'npx playwright test tests/saucedemo-tests.spec.js'
       
       - name: Upload test results
         if: always()
