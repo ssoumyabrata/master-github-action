@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
 env:
-  SAUCE_USER: 'standard_user'
+  SAUCE_USER: ${{secrets.SAUCE_USER}}
 
 jobs:
   test:
