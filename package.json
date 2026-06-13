@@ -1,7 +1,7 @@
 {
   "name": "automation-exercise-tests",
   "version": "1.0.0",
-  "description": "Playwright tests for automationexercise.com",
+  "description": "Playwright tests for learning",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
