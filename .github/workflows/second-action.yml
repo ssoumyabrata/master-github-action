@@ -42,7 +42,7 @@ jobs:
       
       - name: Run Playwright tests
         id: run-plwrt-tests
-        run: 'npx playwright test tests/db-credential-tests.spec.js'
+        run: 'npx playwright test tests/May26/db-credential-tests.spec.js'
   
       - name: Upload test results       # upload any files or results - THIS IS JOB ARTIFACTS
               ## if: always() # upload irrespective of test results
