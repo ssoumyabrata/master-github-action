@@ -1,4 +1,4 @@
-name: SauceLab Github Action Workflow
+name: Testing Github Action Workflow
 on:
   push:
    branches: [main]
