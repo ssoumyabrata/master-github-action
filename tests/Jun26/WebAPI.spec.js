@@ -1,11 +1,16 @@
 const { test, expect, request } = require("@playwright/test");
+const {ApiUtils} = require("./utils/ApiUtils")
 
 const loginPayLoad = { userEmail: "soumyabratasaha8@gmail.com", userPassword: "Password@1" }
 const orderPayLoad = {orders: [{country: "Cuba", productOrderedId: "6960ea76c941646b7a8b3dd5"}]}
 let token;
+let apiUtils;
 
 test.beforeAll( async() => {
-    
+    const apiContext = await request.newContext();
+    apiUtils = new ApiUtils(apiContext, loginPayLoad)
+    token = await apiUtils.getLoginToken()
+
     });
 
 test.beforeEach( async() => {
@@ -98,6 +103,30 @@ test("Verify Order by Login and Creating order using API ", async ({ page }) => 
 
     let orderId = (await createOrderResp.json()).orders[0]
     console.log(`order id is ${orderId}`)
+
+    await page.goto("https://rahulshettyacademy.com/client/#/dashboard/myorders");
+
+    await page.locator("button[routerlink*=myorders]").click()
+    const tableRows = await page.locator("table tr")
+    await tableRows.first().waitFor()
+    await tableRows.filter({
+        hasText: orderId
+    }).locator("button:has-text('View')").click()
+
+    await expect(page.locator(".email-title")).toHaveText(" order summary ")
+    await expect(page.locator("//small[text()='Order Id']/../*[@class='col-text -main']")).toHaveText(orderId)
+
+    //await page.pause()
+
+})
+
+test("Verify Order by Login and Creating order using API - With ApiUtils and Cleaner way", async ({ page }) => {
+
+    page.addInitScript(value => {
+        window.localStorage.setItem('token', value);
+    }, token);
+
+    const orderId = await apiUtils.createOrder(orderPayLoad)
 
     await page.goto("https://rahulshettyacademy.com/client/#/dashboard/myorders");
 
