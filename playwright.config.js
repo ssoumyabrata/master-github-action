@@ -11,8 +11,8 @@ module.exports = defineConfig({
   expect: { timeout: 5000 },
   use: {
     baseURL: 'https://www.saucedemo.com/',
-    trace: 'retain-on-failure',
-    screenshot: 'only-on-failure',
+    trace: 'on',
+    screenshot: 'on',
     video: 'retain-on-failure',
     navigationTimeout: 30000,
     actionTimeout: 15000,

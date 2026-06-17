@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test')
 
-test.only("Order E2E flow in Client website", async ({ page }) => {
+test("Order E2E flow in Client website", async ({ page }) => {
     const lUsername = page.locator('#userEmail')
     const lPassword = page.locator('#userPassword')
     const lSignIn = page.locator("#login")
@@ -48,7 +48,7 @@ test.only("Order E2E flow in Client website", async ({ page }) => {
 
     await page.locator("button[routerlink*=myorders]").click()
     const tableRows = await page.locator("table tr")
-    tableRows.first().waitFor()
+    await tableRows.first().waitFor()
     await tableRows.filter ({
         hasText: orderId
     }).locator("button:has-text('View')").click()

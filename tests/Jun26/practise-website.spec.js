@@ -73,6 +73,7 @@ test("handle new page in playwright", async ({ browser }) => {
     const blinklink = page.locator("[href*='documents-request']")
     await expect(blinklink).toHaveAttribute("class", "blinkingText")
     
+    //to get new page
     const [blinkPage] = await Promise.all(
     [
         context.waitForEvent('page'),
