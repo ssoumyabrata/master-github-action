@@ -1,7 +1,7 @@
 {
-  "name": "automation-exercise-tests",
+  "name": "playwright-js-github-actions",
   "version": "1.0.0",
-  "description": "Playwright tests for learning",
+  "description": "Learn Playwright with JS and Github Actions",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
