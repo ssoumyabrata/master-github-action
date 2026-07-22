@@ -1,6 +1,6 @@
 const { test, expect, request } = require("@playwright/test");
-const { ApiUtils } = require("./utils/ApiUtils");
-const { LoginPage } = require("./pages/LoginPage");
+const { ApiUtils } = require("../utils/ApiUtils");
+const { LoginPage } = require("../pages/LoginPage");
 
 const orderPayLoad = { orders: [{ country: "Cuba", productOrderedId: "6960ea76c941646b7a8b3dd5" }] }
 let token;
