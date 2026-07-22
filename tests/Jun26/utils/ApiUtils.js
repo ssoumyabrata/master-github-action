@@ -3,10 +3,10 @@ const { expect } = require("@playwright/test");
 class ApiUtils {
 
 
-    constructor(apiContext, loginPayLoad) {
+    constructor(apiContext = null, loginPayLoad = null, token = null) {
         this.apiContext = apiContext
         this.loginPayLoad = loginPayLoad
-        this.token = null;
+        this.token = token;
     }
 
     async getLoginToken() {
@@ -20,12 +20,12 @@ class ApiUtils {
         return this.token
     }
 
-    async createOrder(orderPayLoad) {
+    async createOrder(orderPayLoad, token = this.token) {
         const createOrderResp = await this.apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order",
             {
                 data: orderPayLoad,
                 headers: {
-                    'Authorization': this.token,
+                    'Authorization': token,
                     'Content-Type': 'application/json'
                 },
             })
@@ -37,5 +37,7 @@ class ApiUtils {
     }
 
 }
+
+
 
 module.exports = { ApiUtils };
