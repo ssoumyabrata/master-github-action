@@ -18,22 +18,29 @@ test.beforeEach(async () => {
 
 })
 
-test("Verify Unauthorized order view with mocking request data", async ({ page }) => {
+test("Verify No Image Load and API Logging for Req-Resp", async ({ page }) => {
 
     page.addInitScript(value => {
         window.localStorage.setItem('token', value);
     }, token);
 
+    page.route('**/*.{jpg,png,jpeg}', route=> route.abort());
+    page.on('request', request => console.log(request.url()));
+    page.on('response', response => console.log(response.url(), response.status()))
+
+
+
     await page.goto("https://rahulshettyacademy.com/client/");
+
     await page.locator("button[routerlink*=myorders]").click()
 
     await page.route("https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=*",
-        route => route.continue ({
-            url : "https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=4546454655646545"
+        route => route.continue({
+            url: "https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=4546454655646545"
         })
     )
 
     await page.locator("button:has-text('View')").nth(0).click();
     await expect(page.locator(".blink_me")).toHaveText("You are not authorize to view this order");
-  
+
 })
